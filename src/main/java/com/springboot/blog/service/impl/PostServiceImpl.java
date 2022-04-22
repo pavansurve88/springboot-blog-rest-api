@@ -31,19 +31,15 @@ public class PostServiceImpl implements PostService {
     public PostDto createPost(PostDto postDto) {
         // convert DTO into Entity
         Post post = mapToEntity(postDto);
-
         Post newPost = postRepository.save(post);
-
         // convert Entity into DTO
         PostDto postResponce = mapToDTO(newPost);
-
         return postResponce;
     }
 
     @Override
     public PostResponse getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir) {
-        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
-                : Sort.by(sortBy).descending();
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         // crete Pageable instance
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
         Page<Post> posts = postRepository.findAll(pageable);
